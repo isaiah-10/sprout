@@ -1,0 +1,43 @@
+import type { Metadata, Viewport } from 'next'
+import './globals.css'
+
+export const metadata: Metadata = {
+  title:       'Sprout — Kids Finance & Investing',
+  description: 'The fun way for kids ages 5–18 to learn money, investing, and budgeting. Real stocks, real lessons, real confidence.',
+  keywords:    ['kids finance', 'children investing', 'financial literacy', 'stock market for kids', 'budgeting app'],
+  authors:     [{ name: 'Sprout' }],
+  manifest:    '/manifest.json',
+  icons: {
+    icon:  '/icons/icon-192.png',
+    apple: '/icons/icon-512.png',
+  },
+  openGraph: {
+    title:       'Sprout — Kids Finance & Investing',
+    description: 'Real stocks. Real lessons. Fun for all ages 5–18.',
+    type:        'website',
+    siteName:    'Sprout',
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor:    '#2D6A4F',
+  width:         'device-width',
+  initialScale:  1,
+  viewportFit:   'cover',
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}

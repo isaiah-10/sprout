@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@layer base {
+  :root {
+    --background: #FFFDF7;
+    --foreground: #1B3A2D;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #FFFDF7;
+    color: #1B3A2D;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100dvh;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #C9C2AF; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A89E88; }
+}
+
+@layer components {
+  .page-container {
+    @apply ml-0 md:ml-60 min-h-screen;
+  }
+
+  .page-container-kid {
+    @apply ml-0 md:ml-56 pb-20 md:pb-0 min-h-screen;
+  }
+
+  .page-inner {
+    @apply max-w-5xl mx-auto px-4 md:px-8 py-8;
+  }
+
+  .section-title {
+    @apply text-xl font-bold text-bark-600 mb-1;
+  }
+
+  .section-sub {
+    @apply text-sm text-bark-400 mb-6;
+  }
+
+  /* Kid mode colorful backgrounds */
+  .kid-bg-young  { background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); }
+  .kid-bg-middle { background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); }
+  .kid-bg-teen   { background: linear-gradient(135deg, #F0FBF4 0%, #D8F3DC 100%); }
+
+  /* Stock change colors */
+  .up   { @apply text-green-600; }
+  .down { @apply text-red-500; }
+  .flat { @apply text-bark-400; }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #2D6A4F 0%, #52B788 100%);
+  }
+
+  .glass {
+    background: rgba(255, 253, 247, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .card-hover {
+    @apply transition-all duration-150 hover:shadow-md hover:border-sprout-300 hover:-translate-y-0.5;
+  }
+
+  /* Hide scrollbar but keep scroll */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* Recharts custom colors */
+.recharts-cartesian-axis-tick-value { fill: #A89E88; font-size: 11px; }
+.recharts-tooltip-wrapper { font-family: 'Inter', sans-serif !important; }
