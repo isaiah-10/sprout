@@ -20,6 +20,9 @@ export default function SproutChildProfiles() {
   const [nickname, setNickname] = useState('')
   const [band, setBand] = useState<ChildProfile['age_band']>('explore')
   const [status, setStatus] = useState('')
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editingName, setEditingName] = useState('')
+  const [editingBand, setEditingBand] = useState<ChildProfile['age_band']>('explore')
   const [busy, setBusy] = useState(false)
   const [loaded, setLoaded] = useState(false)
 
@@ -59,6 +62,24 @@ export default function SproutChildProfiles() {
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not add profile.')
     } finally { setBusy(false) }
+  }
+
+  async function updateChild(childId: string) {
+    if (busy) return
+    const nextName = editingName.trim()
+    if (!nextName || nextName.length > 32) { setStatus('Nickname must be 1–32 characters.'); return }
+    setBusy(true); setStatus('')
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.from('sprout_child_profiles').update({
+        nickname: nextName, age_band: editingBand, updated_at: new Date().toISOString(),
+      }).eq('id', childId)
+      if (error) throw error
+      setEditingId(null)
+      setStatus('Child profile updated.')
+      await refresh()
+    } catch (error) { setStatus(error instanceof Error ? error.message : 'Update failed.') }
+    finally { setBusy(false) }
   }
 
   async function deleteChild(childId: string, name: string) {
@@ -107,14 +128,33 @@ export default function SproutChildProfiles() {
         {!loaded && <p>Loading profiles…</p>}
         {loaded && children.length===0 && <p className="text-bark-500">No child profiles yet.</p>}
         {children.map(child=>(
-          <div key={child.id} className="bg-white rounded-2xl border border-bark-200 p-5 flex justify-between items-center gap-3">
+          <div key={child.id} className="bg-white rounded-2xl border border-bark-200 p-5 flex flex-wrap justify-between items-center gap-3">
             <div>
               <p className="font-bold text-sprout-800">🌱 {child.nickname}</p>
               <p className="text-sm text-bark-500">{ageLabels[child.age_band]}</p>
               <p className="text-xs text-amber-700">Consent: {child.consent_status === 'verified' ? 'verified' : 'pending — learning locked'}</p>
             </div>
-            <button type="button" disabled={busy} onClick={()=>void deleteChild(child.id,child.nickname)}
-              className="rounded-xl border border-red-200 px-4 py-2 text-red-700 text-sm font-semibold disabled:opacity-50">Delete</button>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button type="button" disabled={busy} onClick={()=>{setEditingId(child.id);setEditingName(child.nickname);setEditingBand(child.age_band);setStatus('')}}
+                className="rounded-xl border border-sprout-200 px-4 py-2 text-sprout-800 text-sm font-semibold disabled:opacity-50">Edit</button>
+              <button type="button" disabled={busy} onClick={()=>void deleteChild(child.id,child.nickname)}
+                className="rounded-xl border border-red-200 px-4 py-2 text-red-700 text-sm font-semibold disabled:opacity-50">Delete</button>
+            </div>
+            {editingId===child.id && <div className="basis-full w-full border-t border-bark-100 pt-4 flex flex-col gap-2">
+              <label htmlFor={'edit-name-'+child.id} className="font-semibold text-sm">Edit nickname</label>
+              <input id={'edit-name-'+child.id} value={editingName} maxLength={32}
+                onChange={e=>setEditingName(e.target.value)} className="rounded-xl border border-bark-200 px-4 py-2"/>
+              <label htmlFor={'edit-band-'+child.id} className="font-semibold text-sm">Edit learning stage</label>
+              <select id={'edit-band-'+child.id} value={editingBand} onChange={e=>setEditingBand(e.target.value as ChildProfile['age_band'])}
+                className="rounded-xl border border-bark-200 px-4 py-2">
+                <option value="explore">{ageLabels.explore}</option><option value="build">{ageLabels.build}</option><option value="thrive">{ageLabels.thrive}</option>
+              </select>
+              <div className="flex gap-2">
+                <button type="button" disabled={busy} onClick={()=>void updateChild(child.id)}
+                  className="rounded-xl bg-sprout-700 px-4 py-2 text-white font-semibold disabled:opacity-50">Save</button>
+                <button type="button" onClick={()=>setEditingId(null)} className="rounded-xl px-4 py-2 border border-bark-200">Cancel</button>
+              </div>
+            </div>}
           </div>
         ))}
       </div>
