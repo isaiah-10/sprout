@@ -40,7 +40,7 @@ export default function SignupPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!form.name || !form.email || !form.password) { setError('All fields required.'); return }
-    if (form.password.length < 8) { setError('Password must be at least 8 characters.'); return }
+    if (form.password.length < 12) { setError('Password must be at least 12 characters.'); return }
     setError('')
     setLoading(true)
 
@@ -95,7 +95,7 @@ export default function SignupPage() {
           <Input
             label="Password"
             type={showPwd ? 'text' : 'password'}
-            placeholder="At least 8 characters"
+            placeholder="At least 12 characters"
             value={form.password}
             onChange={set('password')}
             icon={<Lock size={16} />}
