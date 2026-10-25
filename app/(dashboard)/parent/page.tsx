@@ -22,7 +22,7 @@ export default async function ParentOverviewPage() {
       </div>
       <div className="bg-white rounded-2xl border border-bark-200 p-7">
         <h2 className="text-xl font-bold text-sprout-800 mb-2">Explore · Build · Thrive</h2>
-        <p className="text-bark-500">Sprout is preparing the full 40-module experience for families ages 5–17. We will not show unfinished lessons, charge money or suggest real investing.</p>
+        <p className="text-bark-500 mb-5">Browse all 40 curriculum topics and save your adult-led introductory practice progress. The complete child-directed lessons and games are still under release review.</p><Link href="/parent/learn" className="inline-block bg-sprout-700 text-white px-5 py-3 rounded-xl font-semibold">Open curriculum practice</Link>
       </div>
     </section>
   )
