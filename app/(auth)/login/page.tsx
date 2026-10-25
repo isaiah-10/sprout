@@ -14,9 +14,28 @@ export default function LoginPage() {
   const [showPwd, setShowPwd] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm(prev => ({ ...prev, [k]: e.target.value }))
+
+  async function handleGoogleSignIn() {
+    setError('')
+    setLoading(true)
+    try {
+      const supabase = createClient()
+      const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/api/auth/callback` },
+      })
+      if (oauthError) throw oauthError
+      if (!data.url) throw new Error('Google authentication could not start.')
+      window.location.assign(data.url)
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Google sign-in failed.')
+      setLoading(false)
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -43,6 +62,7 @@ export default function LoginPage() {
         <h1 className="text-2xl font-black text-bark-600 text-center mb-1">Welcome back</h1>
         <p className="text-sm text-bark-400 text-center mb-7">Log in to your parent dashboard</p>
 
+        {notice && <p role="status" className="bg-green-50 border border-green-200 text-green-700 text-sm rounded-xl px-4 py-3 mb-5">{notice}</p>}
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl px-4 py-3 mb-5">{error}</div>
         )}
@@ -74,6 +94,13 @@ export default function LoginPage() {
 
           <Button type="submit" loading={loading} fullWidth size="lg">Log In</Button>
         </form>
+
+        <div className="mt-5">
+          <button type="button" onClick={handleGoogleSignIn} disabled={loading}
+            className="w-full rounded-xl border border-bark-200 bg-white px-4 py-3 font-semibold text-bark-600 hover:bg-cream disabled:opacity-50">
+            Continue with Google
+          </button>
+        </div>
 
         <div className="border-t border-bark-100 mt-5 pt-5 text-center">
           <p className="text-sm text-bark-400">
