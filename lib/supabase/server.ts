@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
 export async function createClient() {
   const cookieStore = await cookies()
@@ -29,6 +30,6 @@ export async function createClient() {
  * Never mix a service-role key with user session cookies.
  * Authentication flows use createClient() above with the publishable key and RLS.
  */
-export async function createServiceClient(): Promise<never> {
+export async function createServiceClient(): Promise<SupabaseClient> {
   throw new Error('Privileged Supabase client disabled pending security review')
 }
