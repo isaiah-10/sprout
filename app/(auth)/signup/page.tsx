@@ -57,7 +57,7 @@ export default function SignupPage() {
       setLoading(false)
       return
     }
-    router.push('/onboarding')
+    router.push('/parent')
   }
 
   return (
