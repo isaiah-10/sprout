@@ -8,8 +8,9 @@ export const metadata: Metadata = {
   authors:     [{ name: 'Sprout' }],
   manifest:    '/manifest.json',
   icons: {
-    icon:  '/icons/icon-192.png',
-    apple: '/icons/icon-512.png',
+    icon:  '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
   },
   openGraph: {
     title:       'Sprout — Growing money confidence',
