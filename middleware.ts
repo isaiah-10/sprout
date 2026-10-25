@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PUBLIC_PAGES = new Set(['/', '/login', '/signup', '/api/auth/callback'])
+const PUBLIC_PAGES = new Set(['/', '/login', '/signup', '/forgot-password', '/reset-password', '/api/auth/callback'])
 const BLOCKED_LEGACY_PREFIXES = [
   '/kid', '/api/stripe', '/api/games', '/api/trades',
   '/api/invest', '/api/portfolio', '/api/allowance',
