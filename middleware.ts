@@ -5,7 +5,9 @@ const PUBLIC_PAGES = new Set(['/', '/login', '/signup', '/api/auth/callback'])
 const BLOCKED_LEGACY_PREFIXES = [
   '/kid', '/api/stripe', '/api/games', '/api/trades',
   '/api/invest', '/api/portfolio', '/api/allowance',
-  '/api/children', '/api/market'
+  '/api/children', '/api/market', '/api/checkout', '/api/billing',
+  '/parent/allowance', '/parent/approvals', '/parent/settings',
+  '/onboarding', '/api/tutor', '/api/achievements', '/api/holdings'
 ]
 
 export async function middleware(request: NextRequest) {
