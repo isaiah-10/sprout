@@ -17,6 +17,7 @@ export default async function ParentLayout({ children }: { children: React.React
             <Link href="/parent">Overview</Link>
             <Link href="/parent/children">Child profiles</Link>
             <Link href="/parent/learn">Curriculum</Link>
+            <Link href="/parent/play">Practice games</Link>
             <ParentSignOut />
           </nav>
         </div>
