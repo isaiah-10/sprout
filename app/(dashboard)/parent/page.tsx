@@ -8,7 +8,20 @@ export default async function ParentOverviewPage() {
   if (!user) redirect('/login')
   const { data: children, error } = await supabase.from('sprout_child_profiles')
     .select('id,nickname,age_band,consent_status').eq('parent_id',user.id).order('created_at')
-  const { data: profile } = await supabase.from('sprout_adult_profiles').select('display_name').eq('user_id',user.id).maybeSingle()
+  let { data: profile } = await supabase.from('sprout_adult_profiles')
+    .select('display_name').eq('user_id', user.id).maybeSingle()
+  // Create the adult-owned dashboard profile on first authorized sign-in.
+  // No service-role access, child information, or billing metadata is involved.
+  if (!profile) {
+    const safeName = (user.email?.split('@')[0] || 'Parent').slice(0, 80)
+    const { error: createError } = await supabase.from('sprout_adult_profiles')
+      .upsert({ user_id: user.id, display_name: safeName }, { onConflict: 'user_id', ignoreDuplicates: true })
+    if (!createError) {
+      const lookup = await supabase.from('sprout_adult_profiles')
+        .select('display_name').eq('user_id', user.id).maybeSingle()
+      profile = lookup.data
+    }
+  }
   return (
     <section className="page-inner space-y-6">
       <div><h1 className="text-3xl font-black text-sprout-800">Welcome to Sprout</h1>
