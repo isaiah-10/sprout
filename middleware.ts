@@ -1,8 +1,24 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+const PUBLIC_PAGES = new Set(['/', '/login', '/signup', '/api/auth/callback'])
+const BLOCKED_LEGACY_PREFIXES = [
+  '/kid', '/api/stripe', '/api/games', '/api/trades',
+  '/api/invest', '/api/portfolio', '/api/allowance',
+  '/api/children', '/api/market'
+]
+
 export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({ request })
+  let response = NextResponse.next({ request })
+  const { pathname } = request.nextUrl
+
+  // Unsafe legacy routes remain disabled until consent/RLS/fictional-money audits pass.
+  if (BLOCKED_LEGACY_PREFIXES.some(p => pathname === p || pathname.startsWith(p + '/'))) {
+    return new NextResponse('This feature is not yet available.', {
+      status: 404,
+      headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' },
+    })
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -12,37 +28,33 @@ export async function middleware(request: NextRequest) {
         getAll() { return request.cookies.getAll() },
         setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request })
+          response = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options as Parameters<typeof supabaseResponse.cookies.set>[2])
+            response.cookies.set(name, value, options as Parameters<typeof response.cookies.set>[2])
           )
         },
       },
     }
   )
-
   const { data: { user } } = await supabase.auth.getUser()
-
-  const { pathname } = request.nextUrl
-
-  // Public routes — always accessible
-  const publicRoutes = ['/', '/login', '/signup', '/api/auth/callback']
-  const isPublic = publicRoutes.some(r => pathname === r || pathname.startsWith('/api/auth'))
-
+  const isPublic = PUBLIC_PAGES.has(pathname)
   if (!user && !isPublic) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+    const destination = request.nextUrl.clone()
+    destination.pathname = '/login'
+    destination.search = ''
+    const redirect = NextResponse.redirect(destination)
+    response.cookies.getAll().forEach(cookie => redirect.cookies.set(cookie))
+    return redirect
   }
-
-  // Authenticated users hitting auth pages → redirect to parent dashboard
   if (user && (pathname === '/login' || pathname === '/signup')) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/parent'
-    return NextResponse.redirect(url)
+    const destination = request.nextUrl.clone()
+    destination.pathname = '/parent'
+    destination.search = ''
+    const redirect = NextResponse.redirect(destination)
+    response.cookies.getAll().forEach(cookie => redirect.cookies.set(cookie))
+    return redirect
   }
-
-  return supabaseResponse
+  return response
 }
 
 export const config = {
