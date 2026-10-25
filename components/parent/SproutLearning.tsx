@@ -18,6 +18,7 @@ export default function SproutLearning() {
   const [working,setWorking] = useState(false)
   const visible = useMemo(()=>approvedTopics.filter(m=>m.id.toLowerCase().includes(search.toLowerCase())||m.title.toLowerCase().includes(search.toLowerCase())),[search])
   const current = approvedTopics.find(m=>m.id===selected)
+  const [reverseAnswers,setReverseAnswers] = useState(false)
   useEffect(()=>{
     let active=true
     async function load() {
@@ -54,7 +55,7 @@ export default function SproutLearning() {
     }catch(e){setStatus(e instanceof Error?e.message:'Could not save practice.')}
     finally{setWorking(false)}
   }
-  function select(id:string){setSelected(id);setAnswer(null);setStatus('')}
+  function select(id:string){setSelected(id);setAnswer(null);setReverseAnswers(Math.random() < 0.5);setStatus('')}
   const completed=Object.values(saved).filter(x=>x.band===stage&&x.completed_lesson_ids.includes('intro-practice')).length
   return <section className="space-y-6 max-w-6xl mx-auto">
     <header className="space-y-2"><p className="text-sm text-sprout-600 font-bold uppercase tracking-widest">Parent-led curriculum exploration</p>
@@ -87,7 +88,7 @@ export default function SproutLearning() {
           <p className="text-bark-500 mb-5">{current.summary}</p>
           <h3 className="font-bold text-bark-600 mb-3">Which statement is accurate?</h3>
           <div className="space-y-2">
-            {([{key:'truth',text:current.truth},{key:'falsehood',text:current.falsehood}] as const).map(opt=><button
+            {(reverseAnswers ? ([{key:'falsehood',text:current.falsehood},{key:'truth',text:current.truth}] as const) : ([{key:'truth',text:current.truth},{key:'falsehood',text:current.falsehood}] as const)).map(opt=><button
               type="button" key={opt.key} aria-pressed={answer===opt.key} onClick={()=>{setAnswer(opt.key);setStatus('')}}
               className={'block w-full text-left border rounded-xl p-4 '+(answer===opt.key?'border-sprout-700 bg-sprout-50':'border-bark-200')}>
               {opt.text}
