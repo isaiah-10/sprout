@@ -120,8 +120,8 @@ export default function SignupPage() {
         </div>
         <p className="text-xs text-bark-400 text-center mt-5">
           By signing up you agree to our{' '}
-          <Link href="#" className="text-sprout-600 hover:underline">Terms</Link> &{' '}
-          <Link href="#" className="text-sprout-600 hover:underline">Privacy Policy</Link>.
+          <a href="https://sprout-public-landing.vercel.app/terms" target="_blank" rel="noopener noreferrer" className="text-sprout-600 hover:underline">Terms</a> &{' '}
+          <a href="https://sprout-public-landing.vercel.app/privacy" target="_blank" rel="noopener noreferrer" className="text-sprout-600 hover:underline">Privacy Policy</a>.
         </p>
 
         <div className="border-t border-bark-100 mt-5 pt-5 text-center">
