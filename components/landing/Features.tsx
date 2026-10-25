@@ -1,72 +1,20 @@
-'use client'
-import { motion } from 'framer-motion'
-
-const features = [
-  {
-    emoji: '🌱',
-    title: 'Ages 5–12: Seeds Simulator',
-    desc: 'Kids invest virtual "Seeds" in REAL companies like Apple, Tesla, and Roblox. Real market prices. Real gains and losses. Zero risk.',
-    color: 'bg-leaf-light border-sprout-200',
-  },
-  {
-    emoji: '📈',
-    title: 'Ages 13+: Real Investing',
-    desc: 'When they turn 13, the platform automatically upgrades. Kids invest real money in stocks, index funds, ETFs, and REITs — all parent-approved.',
-    color: 'bg-sprout-50 border-sprout-300',
-  },
-  {
-    emoji: '🎮',
-    title: 'Learn Through Games',
-    desc: 'Coin Catcher, Budget Boss, Stock Showdown — games designed to teach real concepts. Kids earn XP and Seeds while having fun.',
-    color: 'bg-yellow-50 border-yellow-200',
-  },
-  {
-    emoji: '👨‍👩‍👧',
-    title: 'Parent Dashboard',
-    desc: 'Approve or deny every trade, set monthly limits, see all activity, and send weekly allowances — all from your dashboard.',
-    color: 'bg-blue-50 border-blue-200',
-  },
-  {
-    emoji: '🔒',
-    title: 'Built-in Safety',
-    desc: 'COPPA-compliant. Under-13 accounts are parent-managed. No ads, no data selling. Safe for kids, trusted by parents.',
-    color: 'bg-purple-50 border-purple-200',
-  },
-  {
-    emoji: '🏆',
-    title: 'XP, Badges & Streaks',
-    desc: 'Kids level up from "Seed" to "Stock Legend." Daily streaks, 18 achievements, and family leaderboards keep them coming back.',
-    color: 'bg-orange-50 border-orange-200',
-  },
+import Link from 'next/link'
+const cards=[
+  {n:'01',name:'Explore',age:'Ages 5–8',desc:'Discover needs, wants, saving and sharing with approachable everyday examples.',icon:'✳',tone:'lime'},
+  {n:'02',name:'Build',age:'Ages 9–12',desc:'Practice budgeting, goals, and smarter choices through guided learning.',icon:'↗',tone:'light'},
+  {n:'03',name:'Thrive',age:'Ages 13–17',desc:'Discuss longer-term planning, risk, and financial decisions using fictional examples.',icon:'✦',tone:'dark'},
+  {n:'04',name:'Money basics',age:'Curriculum preview',desc:'Browse 40 introductory parent-led financial literacy topics.',icon:'◎',tone:'light'},
+  {n:'05',name:'Family profiles',age:'Parent managed',desc:'Create and manage up to four child profiles using nicknames.',icon:'❋',tone:'dark'},
+  {n:'06',name:'Practice & play',age:'Adult preview',desc:'Try fictional budgeting practice while child experiences complete release review.',icon:'➚',tone:'lime'}
 ]
-
-export default function Features() {
-  return (
-    <section className="py-24 bg-cream" id="features">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-14">
-          <p className="text-sprout-600 text-sm font-semibold tracking-widest uppercase mb-3">What Sprout Does</p>
-          <h2 className="text-4xl font-black text-sprout-900 mb-4">Everything kids need to grow financially</h2>
-          <p className="text-bark-400 max-w-xl mx-auto text-lg">Two platforms in one. Automatically switches as your child grows.</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {features.map((f, i) => (
-            <motion.div
-              key={f.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className={`rounded-2xl border p-6 ${f.color}`}
-            >
-              <div className="text-3xl mb-3">{f.emoji}</div>
-              <h3 className="font-bold text-bark-600 text-base mb-2">{f.title}</h3>
-              <p className="text-bark-400 text-sm leading-relaxed">{f.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
+export default function Features(){return <section id="learning" className="py-20 sm:py-28 bg-[#fafaf8]"><div id="features" className="max-w-7xl mx-auto px-5 sm:px-8">
+  <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+    <h2 className="text-4xl sm:text-6xl font-black tracking-[-.055em] leading-tight max-w-xl"><span className="bg-[#b7ff60] px-1">Learning</span> that grows with them.</h2>
+    <p className="text-sm sm:text-base text-[#555] max-w-md">Different stages, one goal: helping families build a healthier understanding of money. Here's what's available to explore or currently in preparation.</p>
+  </div>
+  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">{cards.map(c=><article key={c.n} className={`rounded-[26px] border-[1.5px] border-[#191a20] p-7 min-h-[270px] flex flex-col shadow-[0_4px_0_#191a20] ${c.tone==='lime'?'bg-[#b7ff60]':c.tone==='dark'?'bg-[#191a20] text-white':'bg-[#f0f0ef]'}`}>
+    <div className="flex justify-between items-start"><span className="text-xs font-bold tracking-widest">{c.n} / SPROUT</span><span aria-hidden="true" className="text-5xl leading-none">{c.icon}</span></div>
+    <div className="mt-auto pt-9"><div className="text-xs font-semibold uppercase tracking-wider mb-2 opacity-70">{c.age}</div><h3 className="font-black text-2xl mb-3">{c.name}</h3><p className="text-sm leading-relaxed opacity-85">{c.desc}</p></div>
+  </article>)}</div>
+  <div className="mt-9 flex justify-end"><Link href="/signup" className="font-semibold text-sm underline underline-offset-4">Get started with a parent account ↗</Link></div>
+</div></section>}

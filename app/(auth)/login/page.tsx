@@ -18,6 +18,24 @@ export default function LoginPage() {
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm(prev => ({ ...prev, [k]: e.target.value }))
 
+  async function handleGoogleSignIn() {
+    setError('')
+    setLoading(true)
+    try {
+      const supabase = createClient()
+      const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/api/auth/callback` },
+      })
+      if (oauthError) throw oauthError
+      if (!data.url) throw new Error('Google authentication could not start.')
+      window.location.assign(data.url)
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Google sign-in failed.')
+      setLoading(false)
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!form.email || !form.password) { setError('Email and password required.'); return }
@@ -75,10 +93,18 @@ export default function LoginPage() {
           <Button type="submit" loading={loading} fullWidth size="lg">Log In</Button>
         </form>
 
+        <div className="mt-5">
+          <button type="button" onClick={handleGoogleSignIn} disabled={loading}
+            className="w-full rounded-xl border border-bark-200 bg-white px-4 py-3 font-semibold text-bark-600 hover:bg-cream disabled:opacity-50">
+            Continue with Google
+          </button>
+        </div>
+
+        <p className="text-center mt-4 text-sm"><Link href="/forgot-password" className="text-sprout-700 font-semibold hover:underline">Forgot password?</Link></p>
         <div className="border-t border-bark-100 mt-5 pt-5 text-center">
           <p className="text-sm text-bark-400">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-sprout-700 font-semibold hover:underline">Sign up free</Link>
+            <Link href="/signup" className="text-sprout-700 font-semibold hover:underline">Create an account</Link>
           </p>
         </div>
       </div>

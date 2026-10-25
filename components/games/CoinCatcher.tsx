@@ -56,8 +56,11 @@ export default function CoinCatcher({ onComplete, childAge }: Props) {
     // Mouse/touch move
     const onMove = (e: MouseEvent | TouchEvent) => {
       const rect = canvas.getBoundingClientRect()
-      const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX
-      basketRef.current.x = Math.min(Math.max((clientX - rect.left) - basketRef.current.width / 2, 0), W - basketRef.current.width)
+      const clientX = 'touches' in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX
+      if (clientX === undefined) return
+      // Pointer coordinates are CSS pixels; the canvas game runs in intrinsic pixels.
+      const canvasX = (clientX - rect.left) * (W / rect.width)
+      basketRef.current.x = Math.min(Math.max(canvasX - basketRef.current.width / 2, 0), W - basketRef.current.width)
     }
     canvas.addEventListener('mousemove', onMove)
     canvas.addEventListener('touchmove', onMove as EventListener, { passive: true })

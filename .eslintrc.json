@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript"
+  ],
+  "ignorePatterns": [
+    ".next/",
+    "out/",
+    "build/",
+    "coverage/"
+  ],
+  "rules": {
+    "react/no-unescaped-entities": "warn"
+  },
+  "overrides": [
+    {
+      "files": [
+        "app/(dashboard)/parent/allowance/page.tsx",
+        "app/(dashboard)/parent/settings/page.tsx"
+      ],
+      "rules": {
+        "react/no-children-prop": "off"
+      }
+    }
+  ]
+}

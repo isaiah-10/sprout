@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Button from '@/components/ui/Button'
 
 interface Props { onComplete: (score: number, seeds: number) => void }
 
@@ -49,7 +48,7 @@ export default function NeedsVsWants({ onComplete }: Props) {
     <div className="text-center py-6">
       <div className="text-5xl mb-3">🎓</div>
       <h3 className="font-black text-2xl text-bark-600 mb-1">Score: {score} / {items.length * 10}</h3>
-      <p className="text-sprout-600 font-bold mb-4">+{Math.floor(score * 0.5)} Seeds earned!</p>
+      <p className="text-sprout-600 font-bold mb-4">Practice score: {score} points · Fictional reward: {Math.floor(score * 0.5)} Seeds</p>
       <p className="text-bark-400 text-sm">Understanding needs vs wants is the first step to great budgeting!</p>
     </div>
   )

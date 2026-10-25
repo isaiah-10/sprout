@@ -1,36 +1,3 @@
 import Link from 'next/link'
 import SproutLogo from '@/components/layout/SproutLogo'
-
-export default function Footer() {
-  return (
-    <footer className="bg-sprout-900 text-white py-16">
-      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-4 gap-10">
-        <div className="md:col-span-2">
-          <SproutLogo light size="md" showWordmark />
-          <p className="text-white/50 text-sm mt-4 max-w-sm leading-relaxed">
-            Teaching every kid to invest, save, and build wealth before they turn 18. Parent-controlled. COPPA-compliant.
-          </p>
-          <p className="text-white/30 text-xs mt-6">© 2026 Sprout. All rights reserved.</p>
-        </div>
-
-        <div>
-          <p className="font-bold text-sm mb-4 text-white/80">Product</p>
-          <ul className="space-y-2 text-sm text-white/40">
-            {['Features', 'Pricing', 'How It Works', 'For Schools'].map(l => (
-              <li key={l}><Link href="#" className="hover:text-white transition-colors">{l}</Link></li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p className="font-bold text-sm mb-4 text-white/80">Legal</p>
-          <ul className="space-y-2 text-sm text-white/40">
-            {['Privacy Policy', 'Terms of Service', 'COPPA Compliance', 'Cookie Policy'].map(l => (
-              <li key={l}><Link href="#" className="hover:text-white transition-colors">{l}</Link></li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </footer>
-  )
-}
+export default function Footer(){return <footer className="bg-white border-t border-[#ddd] py-14 text-[#191a20]"><div className="max-w-7xl mx-auto px-5 sm:px-8"><div className="flex flex-col sm:flex-row justify-between gap-8"><div><SproutLogo size="md" showWordmark/><p className="mt-4 text-sm max-w-sm text-[#555]">Financial literacy starts with curiosity. Sprout is a parent-led learning preview; child-facing services are not yet available.</p></div><nav aria-label="Footer navigation" className="flex flex-wrap gap-6 text-sm font-semibold"><Link href="#learning">Learning paths</Link><Link href="#how-it-works">How it works</Link><Link href="/login">Log in</Link><Link href="/signup">Parent signup</Link></nav></div><div className="mt-12 pt-6 border-t border-[#ddd] flex flex-wrap justify-between gap-3 text-xs text-[#666]"><p>© 2026 Sprout. All rights reserved.</p><p>Educational examples only. No real-money investing.</p></div></div></footer>}

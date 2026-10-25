@@ -2,18 +2,19 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title:       'Sprout — Kids Finance & Investing',
-  description: 'The fun way for kids ages 5–18 to learn money, investing, and budgeting. Real stocks, real lessons, real confidence.',
+  title:       'Sprout — Growing money confidence',
+  description: 'Parent-led financial literacy practice for ages 5–17. Forty curriculum topics, fictional examples, and no subscriptions.',
   keywords:    ['kids finance', 'children investing', 'financial literacy', 'stock market for kids', 'budgeting app'],
   authors:     [{ name: 'Sprout' }],
   manifest:    '/manifest.json',
   icons: {
-    icon:  '/icons/icon-192.png',
-    apple: '/icons/icon-512.png',
+    icon:  '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
   },
   openGraph: {
-    title:       'Sprout — Kids Finance & Investing',
-    description: 'Real stocks. Real lessons. Fun for all ages 5–18.',
+    title:       'Sprout — Growing money confidence',
+    description: 'Parent-led financial literacy practice with pretend money and no subscriptions.',
     type:        'website',
     siteName:    'Sprout',
   },
