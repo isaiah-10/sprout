@@ -102,7 +102,7 @@ export default function LoginPage() {
           </button>
         </div>
 
-        <div className="border-t border-bark-100 mt-5 pt-5 text-center">
+        <p className="text-center mt-4 text-sm"><Link href="/forgot-password" className="text-sprout-700 font-semibold hover:underline">Forgot password?</Link></p>\n        <div className="border-t border-bark-100 mt-5 pt-5 text-center">
           <p className="text-sm text-bark-400">
             Don&apos;t have an account?{' '}
             <Link href="/signup" className="text-sprout-700 font-semibold hover:underline">Sign up free</Link>
